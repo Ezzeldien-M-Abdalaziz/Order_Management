@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Customer extends Authenticatable
+class Admin extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\CustomerFactory> */
+    /** @use HasFactory<\Database\Factories\AdminFactory> */
     use HasFactory;
     protected $fillable = [
         'name',
@@ -20,9 +19,5 @@ class Customer extends Authenticatable
         'remember_token',
     ];
 
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
 
 }
