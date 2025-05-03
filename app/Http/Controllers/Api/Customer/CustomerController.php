@@ -39,12 +39,29 @@ class CustomerController
     }
 
 
-    public function index(){
-        $customer = Auth::user();
-        return response()->json([
-            'data' => $customer,
-            'message' => 'customer data retrieved successfully',
+    public function register(Request $request)
+    {
+        $fields = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:customers,email',
+            'password' => 'required|string|confirmed|min:6',
         ]);
+
+        $customer = Customer::create([
+            'name' => $fields['name'],
+            'email' => $fields['email'],
+            'password' => bcrypt($fields['password']),
+        ]);
+
+        $token = $customer->createToken($request['name'], ['customer'])->plainTextToken;
+
+        $response = [
+            'message' => "You have been registered successfully",
+            'customer' => $customer,
+            'customer_token' => $token
+        ];
+
+        return response($response, 201);
     }
 
 }

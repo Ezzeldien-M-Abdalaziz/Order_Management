@@ -14,24 +14,16 @@ class SetSanctumGuard
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    // public function handle(Request $request, Closure $next): Response
-    // {
-    //     if (Str::startsWith($request->getRequestUri(), '/api/admin/')) {
-    //         config(['sanctum.guard' => 'admin']);
-    //     } elseif (Str::startsWith($request->getRequestUri(), '/api/customer/')) {
-    //         config(['sanctum.guard' => 'customer']);
-    //     }
-    //     return $next($request);
-    // }
-
     public function handle(Request $request, Closure $next): Response
     {
         if (Str::startsWith($request->getRequestUri(), '/api/admin/')) {
-            config(['auth.defaults.guard' => 'admin']);
-        } elseif (Str::startsWith($request->getRequestUri(), '/api/customers/')) {
-            config(['auth.defaults.guard' => 'customer']);
+            config(['sanctum.guard' => 'admin']);
+        } elseif (Str::startsWith($request->getRequestUri(), '/api/')) {
+            config(['sanctum.guard' => 'customer']);
+        }else {
+            abort(403, 'Unauthorized route');
         }
-
         return $next($request);
     }
+
 }
