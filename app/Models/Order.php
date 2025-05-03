@@ -11,9 +11,8 @@ class Order extends Model
     use HasFactory;
     protected $fillable = [
         'customer_id',
-        'product_id',
-        'quantity',
         'total_price',
+        'quantity',
         'status',
     ];
 
@@ -21,8 +20,31 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
-    public function product()
+    public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsToMany(Product::class, 'order_products')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
+
+
+        public function calculateTotalPrice(): float
+        {
+            $total = 0;
+            foreach ($this->products as $product) {
+                $total += $product->price * $product->pivot->quantity;
+            }
+            return $total;
+        }
+
+        public function calculateQuantity(): float
+        {
+            $total = 0;
+            foreach ($this->products as $product) {
+                $total += $product->pivot->quantity;
+            }
+            return $total;
+        }
+
+
 }

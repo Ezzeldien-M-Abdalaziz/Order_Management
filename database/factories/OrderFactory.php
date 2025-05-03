@@ -20,9 +20,6 @@ class OrderFactory extends Factory
     {
         return [
             'customer_id' => Customer::inRandomOrder()->value('id') ? :Customer::factory(),
-            'product_id' => Product::inRandomOrder()->value('id') ? :Product::factory(),
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'total_price' => $this->faker->randomFloat(2, 10, 100),
             'status' => $this->faker->randomElement(['pending', 'shipped']),
         ];
     }

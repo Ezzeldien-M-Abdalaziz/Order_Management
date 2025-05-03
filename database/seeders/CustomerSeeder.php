@@ -13,6 +13,12 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
+        Customer::create([
+            'name' => 'Ezz',
+            'email' => 'Ezz@example.com',
+            'password' => bcrypt('password')
+        ]);
+
         Customer::factory(20)->create();
     }
 }
